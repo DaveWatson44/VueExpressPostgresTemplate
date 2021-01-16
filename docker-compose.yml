@@ -1,23 +1,46 @@
 version: "3.3"
 services: 
-    client:
+    web:
         build:
-            context: ./client
+            context: ./frontend
             dockerfile: Dockerfile
+        volumes: 
+            - ./frontend:/app
+            - ./app/node_modules
         ports: 
             - "8080:8080"
-    server:
+        networks: 
+            - workout
+    backend:
         build: 
-            context: ./server
+            context: ./backend
             dockerfile: Dockerfile
+        volumes: 
+            - ./backend:/app
+            - ./app/node_modules
         ports: 
             - "3000:3000"
-    # database:
+        networks: 
+            - workout
+        # depends_on: 
+        #     - "db"
+    # db:
     #     build:
     #         context: ./postgres
     #         dockerfile: Dockerfile
     #     environment:
     #         POSTGRES_PASSWORD: Knife444!
-    #         POSTGRES_DB: home
+    #         POSTGRES_DB: bookstore
+    #     volumes:
+    #         - ./postgres:/docker-entrypoint-initdb.d/    
     #     ports: 
     #        - "5432:5432"
+    #     networks: 
+    #         - bookstore
+networks: 
+    workout: 
+        name: workout
+        driver: bridge
+        driver_opts:
+          com.docker.network.bridge.name: workout
+        

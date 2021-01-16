@@ -1,3 +1,3 @@
 # FROM postgres:latest
 
-# ADD ./bookstore.sql /docker-entrypoint-initdb.dls
+# COPY ./bookstore.sql /docker-entrypoint-initdb.d/
